@@ -474,7 +474,7 @@ class Libs extends Common {
 					}
 
 					$values_perm = array($siu_id,
-										 $id,
+										 $car_id,
 										 $carpeta['cli_id'],
 										 $carpeta[0].$carpeta[1].$carpeta[2].$carpeta[3]);
 
