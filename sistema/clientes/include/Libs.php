@@ -244,6 +244,9 @@ if(isset($_REQUEST['accion'])){
 		case "saveRecord":
 			$libs->saveRecord();
 			break;	
+		case "deleteRecord":
+			$libs->deleteRecord();
+			break;	
 	}
 }
 

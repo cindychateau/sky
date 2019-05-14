@@ -337,8 +337,9 @@ class Libs extends Common {
 														  SUP_ID,
 														  CLI_ID,
 														  SIU_ACTIVO,
-														  SIU_MODULOS)
-							 VALUES( ?, ?, ?, ?, ?, ?, ? )";
+														  SIU_MODULOS,
+														  SIU_CARPETAS)
+							 VALUES( ?, ?, ?, ?, ?, ?, ?, ? )";
 
 				$pass_encr = $this->encrypt($_POST['password']);
 
@@ -348,7 +349,8 @@ class Libs extends Common {
 								$_POST["tipo"],
 								$cliente,
 								$_POST['estatus'],
-								$permisos);
+								$permisos,
+								'');
 			}
 
 			$consulta = $db->prepare($sql_user);
@@ -1025,6 +1027,36 @@ class Libs extends Common {
 
 		return $arbol;
 	}
+
+	function deleteRecord() {
+		$json = array();
+		$json['error'] = true;
+		$json['msg'] = "Experimentamos fallas técnicas.";
+		if(isset($_POST['id'])){
+			try{
+				$consulta = $this->_conexion->prepare("DELETE FROM SISTEMA_USUARIO WHERE SIU_ID = :valor");
+				$consulta->bindParam(':valor', $_POST['id']);
+				$consulta->execute();
+				if($consulta->rowCount()){
+					$json['msg'] = "El Usuario fue eliminado con éxito.";
+					$json['error'] = false;
+
+					//Eliminamos los permisos
+					$consulta = $this->_conexion->prepare("DELETE FROM permisos_carpetas WHERE siu_id = :valor");
+					$consulta->bindParam(':valor', $_POST['id']);
+					$consulta->execute();
+
+				} else{
+					$json['error'] = true;
+					$json['msg'] = "El Usuario elegido no pudo ser eliminado.";
+				}
+			}catch(PDOException $e){
+				die($e->getMessage());
+			}	
+		}
+
+		echo json_encode($json);
+	}
 	
 	
 }
@@ -1053,7 +1085,10 @@ if(isset($_REQUEST['accion'])){
 			break;
 		case "getTiposUsuarios":
 			$libs->getTiposUsuarios();
-			break;			
+			break;	
+		case "deleteRecord":
+			$libs->deleteRecord();
+			break;				
 	}
 }
 

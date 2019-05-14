@@ -141,7 +141,7 @@ class Libs extends Common {
 					//Revisamos si tiene archivos hijo
 					$sql_ar = "SELECT * 
 							   FROM documentos 
-							   JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+							   LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 							   WHERE documentos.cli_id = ? 
 							   ORDER BY date DESC LIMIT 0, 1 ";
 					$values_ar = array($cliente['cli_id']);
@@ -175,7 +175,7 @@ class Libs extends Common {
 											<td>'.$ruta.'</td>
 											<td>'.$this->formatBytesToOther($num_ar['size']).'</td>
 											<td>'.$cliente['nombre'].'</td>
-											<td>'.$num_ar['SIU_NOMBRE'].'</td>
+											<td>'.(is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
 											<td>'.$num_ar['date'].'</td>
 										 </tr>';
 
@@ -195,7 +195,7 @@ class Libs extends Common {
 			//Revisamos si tiene archivos hijo
 			$sql_ar = "SELECT * 
 					   FROM documentos 
-					   JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+					   LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 					   WHERE documentos.cli_id = ? 
 					   ORDER BY date DESC LIMIT 0, 1 ";
 			$values_ar = array($cli_id);
@@ -229,7 +229,7 @@ class Libs extends Common {
 									<td>'.$ruta.'</td>
 									<td>'.$this->formatBytesToOther($num_ar['size']).'</td>
 									<td>'.$cliente['nombre'].'</td>
-									<td>'.$num_ar['SIU_NOMBRE'].'</td>
+									<td>'.(is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
 									<td>'.$num_ar['date'].'</td>
 								 </tr>';
 		}
@@ -457,7 +457,7 @@ class Libs extends Common {
 					   SIU_NOMBRE
 				FROM documentos
 				JOIN clientes ON documentos.cli_id = clientes.cli_id
-				JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+				LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 				WHERE documentos.date >= ? AND documentos.date <= ? ';
 		$values = array($fecha_1,
 						$fecha_2);
@@ -486,7 +486,7 @@ class Libs extends Common {
 										<td align="center">'.$ruta.'</td>
 										<td align="center">'.$this->formatBytesToOther($documento['size']).'</td>
 										<td align="center">'.$documento['cli_nombre'].'</td>
-										<td align="center">'.$documento['SIU_NOMBRE'].'</td>
+										<td align="center">'.(is_null($documento['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $documento['SIU_NOMBRE']).'</td>
 										<td align="center">'.$documento['date'].'</td>
 								   </tr>';
 
@@ -577,7 +577,7 @@ class Libs extends Common {
 						   SIU_NOMBRE
 					FROM documentos
 					JOIN clientes ON documentos.cli_id = clientes.cli_id
-					JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+					LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 					WHERE documentos.date >= ? AND documentos.date <= ? ';
 			$values = array($fecha_1,
 							$fecha_2);
@@ -606,7 +606,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($documento['size']))
 			            ->setCellValue('D'.$n, $documento['cli_nombre'])		
-			            ->setCellValue('E'.$n, $documento['SIU_NOMBRE'])		
+			            ->setCellValue('E'.$n, (is_null($documento['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $documento['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $documento['date']);		
 
 			        $n++; 
@@ -634,7 +634,7 @@ class Libs extends Common {
 					//Revisamos si tiene archivos hijo
 					$sql_ar = "SELECT * 
 							   FROM documentos 
-							   JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+							   LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 							   WHERE documentos.cli_id = ? 
 							   ORDER BY date DESC LIMIT 0, 1 ";
 					$values_ar = array($cliente['cli_id']);
@@ -668,7 +668,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($num_ar['size']))
 			            ->setCellValue('D'.$n, $cliente['nombre'])		
-			            ->setCellValue('E'.$n, $num_ar['SIU_NOMBRE'])		
+			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $num_ar['date']);		
 
 			        $n++; 					 
@@ -689,7 +689,7 @@ class Libs extends Common {
 			//Revisamos si tiene archivos hijo
 			$sql_ar = "SELECT * 
 					   FROM documentos 
-					   JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
+					   LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
 					   WHERE documentos.cli_id = ? 
 					   ORDER BY date DESC LIMIT 0, 1 ";
 			$values_ar = array($cli_id);
@@ -732,7 +732,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($num_ar['size']))
 			            ->setCellValue('D'.$n, $cliente['nombre'])		
-			            ->setCellValue('E'.$n, $num_ar['SIU_NOMBRE'])		
+			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $num_ar['date']);		
 
 			$n++; 
