@@ -41,7 +41,7 @@ $(document).ready(function(){
 											label: "Cerrar",
 											callback: function() {
 												bootbox.hideAll();
-												$("#table-actividad").dataTable().fnDestroy();
+												$("#clientes").DataTable().destroy();
 												getRecords();
 											}
 										}

@@ -12,7 +12,7 @@ class Mail extends PHPMailer
 	/**
 	 * Se Inicializa la clase Mail. Recibe El Asunto del correo
 	 */
-	function Mail($subject = ""){
+	function __construct($subject = ""){
 		$this->subject = $subject;
 		$this->hasAttach = false;
 		$this->recipients = array();
