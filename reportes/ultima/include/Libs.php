@@ -175,7 +175,7 @@ class Libs extends Common {
 											<td>'.$ruta.'</td>
 											<td>'.$this->formatBytesToOther($num_ar['size']).'</td>
 											<td>'.$cliente['nombre'].'</td>
-											<td>'.(is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
+											<td>'.(is_null($num_ar['SIU_NOMBRE']) ? 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
 											<td>'.$num_ar['date'].'</td>
 										 </tr>';
 
@@ -229,7 +229,7 @@ class Libs extends Common {
 									<td>'.$ruta.'</td>
 									<td>'.$this->formatBytesToOther($num_ar['size']).'</td>
 									<td>'.$cliente['nombre'].'</td>
-									<td>'.(is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
+									<td>'.(is_null($num_ar['SIU_NOMBRE']) ? 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']).'</td>
 									<td>'.$num_ar['date'].'</td>
 								 </tr>';
 		}
@@ -486,7 +486,7 @@ class Libs extends Common {
 										<td align="center">'.$ruta.'</td>
 										<td align="center">'.$this->formatBytesToOther($documento['size']).'</td>
 										<td align="center">'.$documento['cli_nombre'].'</td>
-										<td align="center">'.(is_null($documento['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $documento['SIU_NOMBRE']).'</td>
+										<td align="center">'.(is_null($documento['SIU_NOMBRE']) ? 'Usuario Eliminado' : $documento['SIU_NOMBRE']).'</td>
 										<td align="center">'.$documento['date'].'</td>
 								   </tr>';
 
@@ -606,7 +606,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($documento['size']))
 			            ->setCellValue('D'.$n, $documento['cli_nombre'])		
-			            ->setCellValue('E'.$n, (is_null($documento['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $documento['SIU_NOMBRE']))		
+			            ->setCellValue('E'.$n, (is_null($documento['SIU_NOMBRE']) ? 'Usuario Eliminado' : $documento['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $documento['date']);		
 
 			        $n++; 
@@ -668,7 +668,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($num_ar['size']))
 			            ->setCellValue('D'.$n, $cliente['nombre'])		
-			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
+			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $num_ar['date']);		
 
 			        $n++; 					 
@@ -732,7 +732,7 @@ class Libs extends Common {
 			            ->setCellValue('B'.$n, $ruta)
 			            ->setCellValue('C'.$n, $this->formatBytesToOther($num_ar['size']))
 			            ->setCellValue('D'.$n, $cliente['nombre'])		
-			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? : 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
+			            ->setCellValue('E'.$n, (is_null($num_ar['SIU_NOMBRE']) ? 'Usuario Eliminado' : $num_ar['SIU_NOMBRE']))		
 			            ->setCellValue('F'.$n, $num_ar['date']);		
 
 			$n++; 
