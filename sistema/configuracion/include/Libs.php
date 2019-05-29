@@ -144,6 +144,26 @@ class Libs extends Common {
 					}
 			}
 
+			if(isset($_FILES['favicon']['name']) && $_FILES['favicon']['name'] != "" && !$json['error']) {
+				$allowed =  array('jpg','JPG', 'jpeg', 'JPEG');
+				$filename = $_FILES['favicon']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				if(!in_array($ext,$allowed) ) {
+				   	$json["error"] = true;
+					$json["msg"] = "Favor de seleccionar una imagen con la extensión correcta para el Logo.";
+					$json["focus"] = "favicon";
+				} else {
+					$pathFoto = "../../../images/favicon.jpeg";
+
+					if (file_exists($pathFoto)) {
+						unlink($pathFoto);
+					}
+
+					move_uploaded_file($_FILES["favicon"]["tmp_name"], $pathFoto);
+
+					}
+			}
+
 			if(isset($_POST['hex'])) {
 				$values = array($_POST['hex']);
 				$sql = "UPDATE configuracion SET contenido = ?

@@ -160,6 +160,18 @@ $js = array('index');
 									<br><br>
 									<div class="row">
 										<div class="form-group">
+											<a href="../../images/favicon.jpeg" target="_blank" style="display: inline-block; text-align: left;">
+												<img src="../../images/favicon.jpeg">
+											</a>
+											<label class="col-sm-2 control-label">Favicon</label>
+											<div class="col-sm-4">
+												<input id="favicon" name="favicon" type="file">
+											</div>
+										</div>
+									</div>
+									<br><br>
+									<div class="row">
+										<div class="form-group">
 											<label class="col-sm-2 control-label">HEX</label>
 											<div class="col-sm-10">
 												<input id="hex" name="hex" type="text" class="form-control">
