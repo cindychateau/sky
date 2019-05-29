@@ -330,7 +330,7 @@ $(document).ready(function(){
 		var doc_id = $(this).attr('data-id');
 		var doc_name = $(this).attr('data-name');
 		bootbox.dialog({
-			message: '¿Desea eliminar permanentemente el documento: '+doc_name+'?',
+			message: '<div id="erase-doc">¿Desea eliminar permanentemente el documento: '+doc_name+'?</div>',
 			buttons: {
 				guardar: {
 				    label: "Aceptar",
@@ -357,7 +357,32 @@ $(document).ready(function(){
 								$('input, file, textarea, button, select').each(function(){
 									$(this).removeAttr('disabled');
 								});
-								bootbox.dialog({
+
+								if(!result.error) {
+									var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
+									$('#erase-doc').prepend(alert);
+									var parent = $('#tree-item-'+doc_id).parents('.tree-folder').attr('id');
+									var header = $('#'+parent).find('.tree-folder-header').attr('id');
+
+									if($('#'+header).hasClass('tree-cl')) {
+										cli_id = $('#'+header).attr('data-id');
+										car_id = 0;
+									} else {
+										//Si no entonces vemos qué carpeta específica es
+										cli_id = 0;
+										car_id = $('#'+header).attr('data-id');
+									}
+
+									printFolder(cli_id, car_id);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
+								} else {
+									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
+									$('#erase-doc').prepend(alert);
+								}
+
+
+
+								/*bootbox.dialog({
 									message: result.msg,
 									buttons: {
 										cerrar: {
@@ -384,7 +409,7 @@ $(document).ready(function(){
 											}
 										}
 									}
-								});
+								});*/
 							}
 						});
 
@@ -496,7 +521,7 @@ $(document).ready(function(){
 		var car_id = $(this).attr('data-id');
 		var car_name = $(this).attr('data-name');
 		bootbox.dialog({
-			message: '¿Desea eliminar permanentemente la carpeta: '+car_name+'?<br> Recuerda que al ser eliminada todos sus contenidos serán borrados también.',
+			message: '<div id="eliminar-car">¿Desea eliminar permanentemente la carpeta: '+car_name+'?<br> Recuerda que al ser eliminada todos sus contenidos serán borrados también.</div>',
 			buttons: {
 				guardar: {
 				    label: "Aceptar",
@@ -523,7 +548,30 @@ $(document).ready(function(){
 								$('input, file, textarea, button, select').each(function(){
 									$(this).removeAttr('disabled');
 								});
-								bootbox.dialog({
+
+								if(!result.error) {
+									var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
+									$('#eliminar-car').prepend(alert);
+									var parent = $('#car-'+car_id).parents('.tree-folder').attr('id');
+									var header = $('#'+parent).find('.tree-folder-header').attr('id');
+
+									if($('#'+header).hasClass('tree-cl')) {
+										cli_id = $('#'+header).attr('data-id');
+										car_id = 0;
+									} else {
+										//Si no entonces vemos qué carpeta específica es
+										cli_id = 0;
+										car_id = $('#'+header).attr('data-id');
+									}
+
+									printFolder(cli_id, car_id);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
+								} else {
+									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
+									$('#eliminar-car').prepend(alert);
+								}
+
+								/*bootbox.dialog({
 									message: result.msg,
 									buttons: {
 										cerrar: {
@@ -550,7 +598,7 @@ $(document).ready(function(){
 											}
 										}
 									}
-								});
+								});*/
 							}
 						});
 

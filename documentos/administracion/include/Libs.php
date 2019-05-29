@@ -707,7 +707,8 @@ class Libs extends Common {
 
 			//Revisamos Permisos de cambios
 			if($this->hasPermission($_POST['car_id'], $documento['cli_id'], 4)) {
-				$json['buttons'] .= '<a class="rename-doc" href="#" data-name="'.$documento['nombre'].'" data-id="'.$documento['doc_id'].'">
+				$document_name = substr($documento['nombre'], 0, -4);
+				$json['buttons'] .= '<a class="rename-doc" href="#" data-name="'.$document_name.'" data-id="'.$documento['doc_id'].'">
 									<button class="btn btn-secondary">
 										<i class="fa fa-edit"></i> Renombrar
 									</button>
@@ -852,6 +853,10 @@ class Libs extends Common {
 				//Subimos documento
 				$ruta_doc = $ruta.$carpeta['ruta'];
 				$doc_name = $ruta_doc.$file_name;
+
+				//CHMOD - Damos permisos al usuario a agregar el
+				//chmod($ruta_doc, 0777);
+
 				if(move_uploaded_file($_FILES['doc']['tmp_name'], $doc_name)){
 
 					//Agregamos el documento en la BD
@@ -919,6 +924,8 @@ class Libs extends Common {
 
 					$json['msg'] = 'Documento guardado con éxito.';
 					$db->commit();
+
+					//chmod($ruta_doc, 0755);
 
 				} else {
 					$json['error'] = true;
@@ -1528,6 +1535,12 @@ class Libs extends Common {
 						$json['error'] = true;
 						$json['msg'] = 'El nombre ingresado ya existe en la carpeta, favor de elegir otro.';
 					} else {
+
+						//Revisamos la extensión
+						$ext = substr($_POST['doc'], -4);
+						if($ext != '.pdf') {
+							$_POST['doc'] = $_POST['doc'].'.pdf';
+						}
 
 						$sql = "UPDATE documentos SET nombre = ?
 								WHERE doc_id = ?";
