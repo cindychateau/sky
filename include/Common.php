@@ -1,6 +1,5 @@
 <?php
-//Se definen las constante del administrador
-define("TITLE_MAIN", "Sistema de Archivo de Documentos - Sky Consulting");
+
 include_once($ruta."include/Core.php");
 
 $baseUrl = 'http://'.$_SERVER["SERVER_NAME"]."/sky/";
@@ -538,4 +537,24 @@ class Common extends Core {
 }
 
 $common = new Common();
+
+try{
+	$sql = "SELECT *
+			FROM configuracion
+			WHERE variable = 'title'
+			LIMIT 0, 1";
+
+	$consulta = $common->_conexion->prepare($sql);
+	$consulta->execute();
+	$title = $consulta->fetch(PDO::FETCH_ASSOC);
+	$title = $title['contenido'];
+
+}catch(PDOException $e){
+	die($e->getMessage());
+}
+
+//Se definen las constante del administrador
+define("TITLE_MAIN", $title);
+
+
 ?>

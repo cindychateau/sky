@@ -178,6 +178,14 @@ $js = array('index');
 											</div>
 										</div>
 									</div>
+									<div class="row">
+										<div class="form-group col-sm-12">
+											<label class="col-sm-2 control-label">Title</label>
+											<div class="col-sm-10">
+												<input id="title" name="title" type="text" class="form-control">
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="card-action">
 									<?php   
