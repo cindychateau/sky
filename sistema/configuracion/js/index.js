@@ -87,8 +87,15 @@ function getRecord() {
 		success: function(result){
 			if(!result.error){
 				$('#summernote').html(result.contacto);
+				$('#index').html(result.index);
 				$('#hex').val(result.hex);
 				$('#summernote').summernote({
+					fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+					tabsize: 2,
+					height: 300
+				});
+
+				$('#index').summernote({
 					fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
 					tabsize: 2,
 					height: 300

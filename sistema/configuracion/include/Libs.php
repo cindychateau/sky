@@ -42,6 +42,16 @@ class Libs extends Common {
 
 			$sql = "SELECT *
 					FROM configuracion
+					WHERE variable = 'index'
+					LIMIT 0, 1";
+
+			$consulta = $this->_conexion->prepare($sql);
+			$consulta->execute();
+			$contacto = $consulta->fetch(PDO::FETCH_ASSOC);
+			$json['index'] = $contacto['contenido'];
+
+			$sql = "SELECT *
+					FROM configuracion
 					WHERE variable = 'hex'
 					LIMIT 0, 1";
 
@@ -138,6 +148,22 @@ class Libs extends Common {
 				$values = array($_POST['hex']);
 				$sql = "UPDATE configuracion SET contenido = ?
 							WHERE variable = 'hex'";
+
+				$consulta = $db->prepare($sql);
+
+				try {
+					$consulta->execute($values);
+
+				} catch(PDOException $e) {
+					$db->rollBack();
+					die($e->getMessage());
+				}
+			}
+
+			if(isset($_POST['index'])) {
+				$values = array($_POST['index']);
+				$sql = "UPDATE configuracion SET contenido = ?
+							WHERE variable = 'index'";
 
 				$consulta = $db->prepare($sql);
 

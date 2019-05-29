@@ -124,7 +124,10 @@ $js = array('index');
 						<div class="card">
 							<form id="frm-contacto">
 								<div class="card-body">
-									  <textarea id="summernote" name="contacto"></textarea>
+									<label>HOME (al iniciar sesión)</label>
+									<textarea id="summernote" name="contacto"></textarea>
+									<label>INDEX (antes de iniciar sesión)</label>
+									<textarea id="index" name="index"></textarea>
 									<div class="row">
 									  	<small>
 											*Las imágenes deben de ser en formato .png .<br>

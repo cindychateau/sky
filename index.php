@@ -20,6 +20,25 @@ if (isset($_SESSION["sky"]["loginError"])) {
 	unset($_SESSION["sky"]["loginError"]);
 }
 
+//Se incluye la clase Common
+$ruta = '';
+include_once("include/Common.php");
+
+try{
+	$sql = "SELECT *
+			FROM configuracion
+			WHERE variable = 'index'
+			LIMIT 0, 1";
+
+	$consulta = $common->_conexion->prepare($sql);
+	$consulta->execute();
+	$index = $consulta->fetch(PDO::FETCH_ASSOC);
+	$index = $index['contenido'];
+
+}catch(PDOException $e){
+	die($e->getMessage());
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,8 +70,7 @@ if (isset($_SESSION["sky"]["loginError"])) {
 <body class="login">
 	<div class="wrapper wrapper-login wrapper-login-full p-0">
 		<div class="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center bg-secondary-gradient">
-			<h1 class="title fw-bold text-white mb-3">Sky Consulting</h1>
-			<p class="subtitle text-white op-7">Bienvenido al Sistema de Archivo de Documentos. Para comenzar a utilizarlo favor de iniciar sesión.</p>
+			<?php echo $index; ?>
 		</div>
 		<div class="login-aside w-50 d-flex align-items-center justify-content-center bg-white">
 			<div class="container container-login container-transparent animated fadeIn">
