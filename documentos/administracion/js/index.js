@@ -450,7 +450,7 @@ $(document).ready(function(){
 									var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
 									$('#form-new-folder').prepend(alert);
 									printFolder(cli_id, car_id);
-									setTimeout(function () { bootbox.hideAll();}, 3000);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
 								} else {
 									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
 									$('#form-new-folder').prepend(alert);
@@ -629,7 +629,7 @@ $(document).ready(function(){
 										car_id = $('#'+header).attr('data-id');
 									}
 									printFolder(cli_id, car_id);
-									setTimeout(function () { bootbox.hideAll();}, 3000);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
 								} else {
 									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
 									$('#form-rename-doc').prepend(alert);
@@ -743,7 +743,7 @@ $(document).ready(function(){
 									}
 
 									printFolder(cli_id, car_id);
-									setTimeout(function () { bootbox.hideAll();}, 3000);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
 								} else {
 									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
 									$('#form-rename').prepend(alert);
@@ -860,7 +860,7 @@ $(document).ready(function(){
 									var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
 									$('#form-new-folder').prepend(alert);
 									printFolder(cli_id, car_id);
-									setTimeout(function () { bootbox.hideAll();}, 3000);
+									setTimeout(function () { bootbox.hideAll();}, 1750);
 								} else {
 									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
 									$('#form-new-folder').prepend(alert);
@@ -1096,7 +1096,7 @@ function saveDoc(formdata) {
 				var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
 				$('#form-new-doc').prepend(alert);
 				printFolder(cli_id, car_id);
-				setTimeout(function () { bootbox.hideAll();}, 3000);
+				setTimeout(function () { bootbox.hideAll();}, 1750);
 			} else {
 				var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
 				$('#form-new-doc').prepend(alert);
