@@ -314,10 +314,10 @@ select.form-control {
   text-decoration: none;
 }
 
-body::after {
+.main-panel > .content::after {
   content: "";
   background: url('../../images/watermark.png') center center no-repeat;
-  opacity: 0.05;
+  opacity: 0.15;
   top: 0;
   left: 0;
   bottom: 0;
