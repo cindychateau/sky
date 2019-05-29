@@ -458,7 +458,7 @@ class Libs extends Common {
 				FROM documentos
 				JOIN clientes ON documentos.cli_id = clientes.cli_id
 				LEFT JOIN SISTEMA_USUARIO ON SISTEMA_USUARIO.SIU_ID = documentos.siu_id
-				WHERE documentos.date >= ? AND documentos.date <= ? ';
+				WHERE DATE(documentos.date) >= ? AND DATE(documentos.date) <= ? ';
 		$values = array($fecha_1,
 						$fecha_2);
 		$order = ' ORDER BY documentos.date DESC ';
