@@ -52,3 +52,18 @@ try{
 	background: <?=$color?>!important;
 }
 
+.btn-secondary {
+	background-color: <?=$color?>!important;
+	border-color: <?=$color?>!important;
+}
+
+.sidebar .nav.nav-secondary > .nav-item.active a:before, .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item.active a:before {
+	background-color: <?=$color?>!important;
+}
+
+.btn-secondary:disabled, .btn-secondary:focus, .btn-secondary:hover {
+	background-color: <?=$color?>!important;
+	border-color: <?=$color?>!important;
+	opacity: .95;
+}
+
