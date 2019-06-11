@@ -1894,6 +1894,8 @@ class Libs extends Common {
 						//Subimos el archivo
 						//Revisamos si hay repetido y qué acción se tomará
 
+						$existe_doc = false;
+
 						if(!$json['error'] && $current['name'] != '.DS_Store' && $current['ext'] == '.pdf') {
 
 							$file_name = $current['name'];
@@ -1907,28 +1909,31 @@ class Libs extends Common {
 							if ($consulta_chck->rowCount()) {
 								//SI hay un documento con ese nombre
 								$documento = $consulta_chck->fetch(PDO::FETCH_ASSOC);
-								//Verificamos la acción a tomar
-								//if($_POST['accion_extra'] == 2) {
-									//Esto significa que quiere conservar ambos docs
-									//Buscamos un nuevo nombre
-									$ruta_doc = $ruta.$last_ruta;
-									$doc_name = $ruta_doc.$file_name;
-									$ext = pathinfo($file_name, PATHINFO_EXTENSION);
-									$name_original = rtrim($file_name, '.'.$ext);
-									$n = 1;
-									while (file_exists($doc_name)) {
-										$name = $name_original.'('.$n.').'.$ext;
-										$file_name = $name;
-										$doc_name = $ruta_doc.$file_name;
-										$n++;
-									}
 
-								//}
+								$existe_doc = true;
+
+								// //Verificamos la acción a tomar
+								// //if($_POST['accion_extra'] == 2) {
+								// 	//Esto significa que quiere conservar ambos docs
+								// 	//Buscamos un nuevo nombre
+								// 	$ruta_doc = $ruta.$last_ruta;
+								// 	$doc_name = $ruta_doc.$file_name;
+								// 	$ext = pathinfo($file_name, PATHINFO_EXTENSION);
+								// 	$name_original = rtrim($file_name, '.'.$ext);
+								// 	$n = 1;
+								// 	while (file_exists($doc_name)) {
+								// 		$name = $name_original.'('.$n.').'.$ext;
+								// 		$file_name = $name;
+								// 		$doc_name = $ruta_doc.$file_name;
+								// 		$n++;
+								// 	}
+
+								// //}
 							}
 
 						}
 
-						if(!$json['error'] && $current['name'] != '.DS_Store' && $current['ext'] == '.pdf') {
+						if(!$json['error'] && $current['name'] != '.DS_Store' && $current['ext'] == '.pdf' && !$existe_doc) {
 							//Subimos documento
 							$ruta_doc = $ruta.$last_ruta;
 							$doc_name = $ruta_doc.$file_name;
@@ -2005,6 +2010,8 @@ class Libs extends Common {
 								$json['msg'] = "Error al subir archivo. Inténtelo de nuevo más tarde.";
 							}
 						}
+
+						$json['msg'] = 'Archivos guardado con éxito.';
 
 					}
 
