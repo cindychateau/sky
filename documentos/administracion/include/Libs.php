@@ -1789,6 +1789,8 @@ class Libs extends Common {
 
 					
 					// Check whether the current entity is an actual file or a folder (With a . for a name)
+					$current['ext'] = substr($current['name'], -4);
+
 					if(strlen($current['name'])!=1) {
 
 						//Recorremos todos los folders del archivo
@@ -1891,7 +1893,8 @@ class Libs extends Common {
 						//Una vez que ya revisamos que estén todas las carpetas
 						//Subimos el archivo
 						//Revisamos si hay repetido y qué acción se tomará
-						if(!$json['error'] && $current['name'] != '.DS_Store') {
+
+						if(!$json['error'] && $current['name'] != '.DS_Store' && $current['ext'] == '.pdf') {
 
 							$file_name = $current['name'];
 
@@ -1925,7 +1928,7 @@ class Libs extends Common {
 
 						}
 
-						if(!$json['error'] && $current['name'] != '.DS_Store') {
+						if(!$json['error'] && $current['name'] != '.DS_Store' && $current['ext'] == '.pdf') {
 							//Subimos documento
 							$ruta_doc = $ruta.$last_ruta;
 							$doc_name = $ruta_doc.$file_name;
