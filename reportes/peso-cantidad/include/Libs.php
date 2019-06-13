@@ -153,20 +153,20 @@ class Libs extends Common {
 					$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 					//Revisamos los documentos (Páginas)
-					$sql_ar = "SELECT doc_id FROM documentos WHERE cli_id = ?";
+					/*$sql_ar = "SELECT doc_id FROM documentos WHERE cli_id = ?";
 					$values_ar = array($cliente['cli_id']);
 					$consulta_ar = $db->prepare($sql_ar);
 					$consulta_ar->execute($values_ar);
-					$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+					$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
 					$num_paginas = 0;
-					foreach ($archivos as $archivo) {
+					/*foreach ($archivos as $archivo) {
 						$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 						$values_doc = array($archivo['doc_id']);
 						$consulta_doc = $db->prepare($sql_doc);
 						$consulta_doc->execute($values_doc);
 						$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 						$num_paginas += $numero['num_pag'];
-					}
+					}*/
 
 					$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
@@ -204,20 +204,20 @@ class Libs extends Common {
 			$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 			//Revisamos los documentos (Páginas)
-			$sql_ar = "SELECT doc_id FROM documentos WHERE cli_id = ?";
+			/*$sql_ar = "SELECT doc_id FROM documentos WHERE cli_id = ?";
 			$values_ar = array($cli_id);
 			$consulta_ar = $db->prepare($sql_ar);
 			$consulta_ar->execute($values_ar);
-			$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+			$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
 			$num_paginas = 0;
-			foreach ($archivos as $archivo) {
+			/*foreach ($archivos as $archivo) {
 				$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 				$values_doc = array($archivo['doc_id']);
 				$consulta_doc = $db->prepare($sql_doc);
 				$consulta_doc->execute($values_doc);
 				$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 				$num_paginas += $numero['num_pag'];
-			}
+			}*/
 
 			$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
@@ -303,20 +303,20 @@ class Libs extends Common {
 			$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 			//Revisamos los documentos (Páginas)
-			$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = 0 AND cli_id = ?";
+			/*$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = 0 AND cli_id = ?";
 			$values_ar = array($_POST['cl']);
 			$consulta_ar = $db->prepare($sql_ar);
 			$consulta_ar->execute($values_ar);
-			$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+			$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
 			$num_paginas = 0;
-			foreach ($archivos as $archivo) {
+			/*foreach ($archivos as $archivo) {
 				$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 				$values_doc = array($archivo['doc_id']);
 				$consulta_doc = $db->prepare($sql_doc);
 				$consulta_doc->execute($values_doc);
 				$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 				$num_paginas += $numero['num_pag'];
-			}
+			}*/
 
 			$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
@@ -385,20 +385,20 @@ class Libs extends Common {
 				$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 				//Revisamos los documentos (Páginas)
-				$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ?";
+				/*$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ?";
 				$values_ar = array($_POST['c']);
 				$consulta_ar = $db->prepare($sql_ar);
 				$consulta_ar->execute($values_ar);
-				$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+				$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
 				$num_paginas = 0;
-				foreach ($archivos as $archivo) {
+				/*foreach ($archivos as $archivo) {
 					$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 					$values_doc = array($archivo['doc_id']);
 					$consulta_doc = $db->prepare($sql_doc);
 					$consulta_doc->execute($values_doc);
 					$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 					$num_paginas += $numero['num_pag'];
-				}
+				}*/
 
 				$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
@@ -463,20 +463,20 @@ class Libs extends Common {
 				$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 				//Revisamos los documentos (Páginas)
-				$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ? AND cli_id = ?";
+				/*$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ? AND cli_id = ?";
 				$values_ar = array($_POST['c'], $cli_id);
 				$consulta_ar = $db->prepare($sql_ar);
 				$consulta_ar->execute($values_ar);
-				$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+				$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
 				$num_paginas = 0;
-				foreach ($archivos as $archivo) {
+				/*foreach ($archivos as $archivo) {
 					$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 					$values_doc = array($archivo['doc_id']);
 					$consulta_doc = $db->prepare($sql_doc);
 					$consulta_doc->execute($values_doc);
 					$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 					$num_paginas += $numero['num_pag'];
-				}
+				}*/
 
 				$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
@@ -507,7 +507,7 @@ class Libs extends Common {
 		$num_ar['peso'] += $row_ar['peso'];
 
 		//Revisamos los documentos (Páginas)
-		$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ?";
+		/*$sql_ar = "SELECT doc_id FROM documentos WHERE car_id = ?";
 		$values_ar = array($car_id);
 		$consulta_ar = $db->prepare($sql_ar);
 		$consulta_ar->execute($values_ar);
@@ -519,7 +519,7 @@ class Libs extends Common {
 			$consulta_doc->execute($values_doc);
 			$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 			$num_ar['num_paginas'] += $numero['num_pag'];
-		}
+		}*/
 
 		//Verificamos las carpetas hijo
 		$sql_car = "SELECT * FROM carpetas WHERE nivel = ?";
