@@ -227,6 +227,160 @@ class Libs extends Common {
 
 		echo json_encode($json);
 	}
+
+	function deleteRecord() {
+		global $ruta;
+
+		if(isset($_POST['id'])) {
+
+			$db = $this->_conexion;
+
+			//Datos de carpeta
+			$sql_car = 'SELECT car_id, prefijo 
+						FROM carpetas 
+						JOIN clientes ON clientes.cli_id = carpetas.cli_id
+						WHERE clientes.cli_id = ? 
+						AND nivel = 0';
+			$values_car = array($_POST['id']);
+			$consulta_car = $db->prepare($sql_car);
+			$consulta_car->execute($values_car);
+			$carpetas = $consulta_car->fetchAll(PDO::FETCH_ASSOC);
+
+			//Recorremos todos las carpetas nivel 0
+			$db->beginTransaction();
+			foreach ($carpetas as $carpeta) {
+				try {
+
+					//Eliminamos los registros que hay de esta carpeta de manera recursiva
+					$this->deleteFolderRec($carpeta['car_id']);
+
+				} catch(PDOException $e) {
+					$db->rollBack();
+					die($e->getMessage());
+				}
+			}
+
+			//Revisamos todos los documentos hijos
+			$sql_doc = 'SELECT * FROM documentos WHERE cli_id = ? AND car_id = 0';
+			$values_doc = array($_POST['id']);
+			$consulta_doc = $db->prepare($sql_doc);
+			$consulta_doc->execute($values_doc);
+			$documentos = $consulta_doc->fetchAll(PDO::FETCH_ASSOC);		
+			foreach ($documentos as $documento) {
+				//Eliminamos todos los documentos de la DB
+				$consulta_del = $db->prepare("DELETE FROM documentos WHERE doc_id = :valor");
+				$consulta_del->bindParam(':valor', $documento['doc_id']);
+				$consulta_del->execute();
+
+				//Eliminamos documento "físico"
+				$doc_name = $ruta.$documento['ruta'].$documento['nombre'];
+				if(file_exists($doc_name)) {
+					unlink($doc_name);
+				}
+				
+
+				//Eliminamos el detalle
+				$consulta_del = $db->prepare("DELETE FROM documentos_detalles WHERE doc_id = :valor");
+				$consulta_del->bindParam(':valor', $documento['doc_id']);
+				$consulta_del->execute();
+			}
+
+			//Eliminamos la carpeta completa
+			$sql_car = 'SELECT prefijo 
+						FROM clientes 
+						WHERE cli_id = ?';
+			$values_car = array($_POST['id']);
+			$consulta_car = $db->prepare($sql_car);
+			$consulta_car->execute($values_car);
+			$cliente = $consulta_car->fetch(PDO::FETCH_ASSOC);
+			$car_name = $ruta.'archivos/'.$cliente['prefijo'];
+			if(file_exists($car_name)) {
+				rmdir($car_name);
+			}
+
+			$consulta_del = $db->prepare("DELETE FROM clientes WHERE cli_id = :valor");
+			$consulta_del->bindParam(':valor', $_POST['id']);
+			$consulta_del->execute();
+
+			$json['msg'] = 'Carpeta eliminada con éxito.';
+			$db->commit();
+
+		} else {
+			$json['error'] = true;
+			$json['msg'] = 'Favor de elegir un documento válido.';
+		}
+
+		echo json_encode($json);
+	}
+
+	function deleteFolderRec($car_id) {
+		global $ruta;
+
+		$db = $this->_conexion;
+		$sql_car = 'SELECT * FROM carpetas WHERE car_id = ?';
+		$values_car = array($car_id);
+		$consulta_car = $db->prepare($sql_car);
+		$consulta_car->execute($values_car);
+		$carpeta = $consulta_car->fetch(PDO::FETCH_ASSOC);
+
+		//Eliminamos la carpeta de la DB
+		$consulta_del = $db->prepare("DELETE FROM carpetas WHERE car_id = :valor");
+		$consulta_del->bindParam(':valor', $carpeta['car_id']);
+		$consulta_del->execute();
+
+		//Revisamos todos los documentos hijos
+		$sql_doc = 'SELECT * FROM documentos WHERE car_id = ?';
+		$values_doc = array($car_id);
+		$consulta_doc = $db->prepare($sql_doc);
+		$consulta_doc->execute($values_doc);
+		$documentos = $consulta_doc->fetchAll(PDO::FETCH_ASSOC);		
+		foreach ($documentos as $documento) {
+			//Eliminamos todos los documentos de la DB
+			$consulta_del = $db->prepare("DELETE FROM documentos WHERE doc_id = :valor");
+			$consulta_del->bindParam(':valor', $documento['doc_id']);
+			$consulta_del->execute();
+
+			//Eliminamos documento "físico"
+			$doc_name = $ruta.$documento['ruta'].$documento['nombre'];
+			//if(file_exists($doc_name)) {
+				@unlink($doc_name);
+			//}
+			
+
+			//Eliminamos el detalle
+			$consulta_del = $db->prepare("DELETE FROM documentos_detalles WHERE doc_id = :valor");
+			$consulta_del->bindParam(':valor', $documento['doc_id']);
+			$consulta_del->execute();
+		}
+
+		//Por si acaso hay documentos que no están listados en la db
+		foreach (scandir($ruta.$carpeta['ruta'].$carpeta['nombre']) as $item) {
+	        if ($item != '.' && $item != '..') {
+	        	if (!is_dir($ruta.$carpeta['ruta'].$carpeta['nombre'] . DIRECTORY_SEPARATOR . $item)) {
+	        		unlink($ruta.$carpeta['ruta'].$carpeta['nombre'] . DIRECTORY_SEPARATOR . $item);
+	        	}
+	        }
+
+	    }
+
+		//Revisamos todas las carpetas hijas y las eliminamos
+		$sql_car2 = 'SELECT * FROM carpetas WHERE nivel = ?';
+		$values_car2 = array($car_id);
+		$consulta_car2 = $db->prepare($sql_car2);
+		$consulta_car2->execute($values_car2);
+		$carpetas_hijas = $consulta_car2->fetchAll(PDO::FETCH_ASSOC);
+
+		foreach ($carpetas_hijas as $carpeta_hija) {
+			$this->deleteFolderRec($carpeta_hija['car_id']);
+		}
+
+		//Eliminamos la carpeta completa
+		$car_name = $ruta.$carpeta['ruta'].$carpeta['nombre'];
+		if(file_exists($car_name)) {
+			rmdir($car_name);
+		}
+
+	}
 	
 	
 }

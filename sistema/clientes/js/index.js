@@ -9,46 +9,45 @@ $(document).ready(function(){
 		params.id = id;
 		params.accion = 'deleteRecord';
 		bootbox.dialog({
-			message: "¿Desea eliminar el Cliente seleccionado?",
+			message: '<div id="eliminar-car">¿Desea eliminar el Cliente seleccionado?</div>',
 			buttons: {
 				aceptar: {
 					label: "Aceptar",
 					className: "btn-primary",
 					callback: function() {
 						$.ajax({
-							type:'post',
-							data:params,
-							url:'include/Libs.php',
-							dataType:'json',
-							error:function(){
-								bootbox.dialog({
-									message: "Experimentamos Fallas Técnicas. Comuníquese con su proveedor.",
-									buttons: {
-										cerrar: {
-											label: "Cerrar",
-											callback: function() {
-												bootbox.hideAll();
-											}
-										}
-									}
+							url: 'include/Libs.php',
+							type: 'POST',
+							data: params,
+							dataType: 'JSON',
+							beforeSend: function(){
+								$('input, file, textarea, button, select').each(function(){
+									$(this).attr('disabled','disabled');
 								});
 							},
-							success:function(result){
-								bootbox.dialog({
-									message: result.msg,
-									buttons: {
-										cerrar: {
-											label: "Cerrar",
-											callback: function() {
-												bootbox.hideAll();
-												$("#table-actividad").dataTable().fnDestroy();
-												getRecords();
-											}
-										}
-									}
+							error: function (){
+								$('input, file, textarea, button, select').each(function(){
+									$(this).removeAttr('disabled');
 								});
+								bootbox.alert("Experimentamos fallas técnicas. Comuníquese con su proveedor.");
+							}, success: function (result) {
+								$('input, file, textarea, button, select').each(function(){
+									$(this).removeAttr('disabled');
+								});
+
+								if(!result.error) {
+									var alert = "<div class='alert alert-success' role='alert'>"+result.msg+"</div>";
+									$("#clientes").DataTable().destroy();
+									getRecords();
+									setTimeout(function () { bootbox.hideAll();}, 1750);
+								} else {
+									var alert = "<div class='alert alert-danger' role='alert'>"+result.msg+"</div>";
+									$('#eliminar-car').prepend(alert);
+								}
 							}
 						});
+
+						return false;
 					}
 				},
 				cancelar: {
