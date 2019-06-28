@@ -168,7 +168,7 @@ class Libs extends Common {
 			$sql_num = 'SELECT COUNT(documentos.doc_id) as Total_Registros
 						FROM documentos
 						LEFT JOIN documentos_detalles ON documentos_detalles.doc_id = documentos.doc_id
-						WHERE 1 = 1 '.$where.' GROUP BY documentos.doc_id';
+						WHERE 1 = 1 '.$where;
 			$consulta_num = $db->prepare($sql_num);
 
 			//echo $sql_num;
