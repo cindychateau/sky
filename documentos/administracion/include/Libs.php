@@ -866,15 +866,17 @@ class Libs extends Common {
 													siu_id,
 													cli_id,
 													ruta,
-													size)
-							VALUES( ?, ?, ?, ?, ?, ? )";	
+													size,
+													num_docs)
+							VALUES( ?, ?, ?, ?, ?, ?, ? )";	
 
 					$values = array($file_name,
 									$_POST['car_id'],
 									$siu_id,
 									$cli_id,
 									$carpeta['ruta'],
-									$size);
+									$size,
+									0);
 
 					$consulta = $db->prepare($sql);
 
@@ -920,6 +922,23 @@ class Libs extends Common {
 						}
 
 						$num_page++;
+					}
+
+					//Guardamos cuántas páginas fueron
+					$sql_upd = "UPDATE documentos SET num_docs = ?
+								WHERE doc_id = ?";
+
+					$values_upd = array(($num_page-1),
+										$doc_id);
+
+					$consulta_upd = $db->prepare($sql_upd);
+
+					try {
+						$consulta_upd->execute($values_upd);
+
+					} catch(PDOException $e) {
+						$db->rollBack();
+						die($e->getMessage());
 					}
 
 					$json['msg'] = 'Documento guardado con éxito.';
@@ -1946,15 +1965,17 @@ class Libs extends Common {
 																siu_id,
 																cli_id,
 																ruta,
-																size)
-										VALUES( ?, ?, ?, ?, ?, ? )";	
+																size,
+																num_docs)
+										VALUES( ?, ?, ?, ?, ?, ?, ? )";	
 
 								$values = array($file_name,
 												$last_car_id,
 												$siu_id,
 												$cli_id,
 												$last_ruta,
-												$size);
+												$size,
+												0);
 
 								$consulta = $db->prepare($sql);
 
@@ -2002,6 +2023,22 @@ class Libs extends Common {
 									$num_page++;
 								}
 
+								//Guardamos cuántas páginas fueron
+								$sql_upd = "UPDATE documentos SET num_docs = ?
+											WHERE doc_id = ?";
+
+								$values_upd = array(($num_page-1),
+													$doc_id);
+
+								$consulta_upd = $db->prepare($sql_upd);
+
+								try {
+									$consulta_upd->execute($values_upd);
+
+								} catch(PDOException $e) {
+									die($e->getMessage());
+								}
+
 								$json['msg'] = 'Archivos guardado con éxito.';
 								//$db->commit();
 
@@ -2027,6 +2064,45 @@ class Libs extends Common {
 
 
 		echo json_encode($json);
+	}
+
+	function modificacionDocs() {
+		$db = $this->_conexion;
+		$sql_ar = "SELECT doc_id FROM documentos";
+		$values_ar = array();
+		$consulta_ar = $db->prepare($sql_ar);
+		$consulta_ar->execute($values_ar);
+		$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($archivos as $archivo) {
+			$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
+			$values_doc = array($archivo['doc_id']);
+			$consulta_doc = $db->prepare($sql_doc);
+			$consulta_doc->execute($values_doc);
+			$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
+
+			//Guardamos en la base de datos
+			$values = array($numero['num_pag'],
+							$archivo['doc_id']);
+
+			$sql = "UPDATE documentos SET num_docs = ?
+					WHERE doc_id = ?";
+
+			$consulta = $db->prepare($sql);
+
+			try {
+				$consulta->execute($values);
+
+			} catch(PDOException $e) {
+				die($e->getMessage());
+			}
+
+			echo 'DOCID: '.$archivo['doc_id'].': '.$numero['num_pag'].'<br>';
+
+		}
+
+
+		echo 'Listo!';
+
 	}
 	
 	
@@ -2092,7 +2168,10 @@ if(isset($_REQUEST['accion'])){
 			break;
 		case "newFolderDocs":
 			$libs->newFolderDocs();
-			break;													
+			break;	
+		case "modificacionDocs":
+			$libs->modificacionDocs();
+			break;														
 	}
 }
 

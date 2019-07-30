@@ -153,12 +153,11 @@ class Libs extends Common {
 					$num_ar = $consulta_ar->fetch(PDO::FETCH_ASSOC);
 
 					//Revisamos los documentos (Páginas)
-					/*$sql_ar = "SELECT doc_id FROM documentos WHERE cli_id = ?";
-					$values_ar = array($cliente['cli_id']);
-					$consulta_ar = $db->prepare($sql_ar);
-					$consulta_ar->execute($values_ar);
-					$archivos = $consulta_ar->fetchAll(PDO::FETCH_ASSOC);*/
-					$num_paginas = 0;
+					$sql_doc = "SELECT SUM(num_docs) as paginas FROM documentos WHERE cli_id = ?";
+					$values_doc = array($cliente['cli_id']);
+					$consulta_doc = $db->prepare($sql_doc);
+					$consulta_doc->execute($values_doc);
+					$numero = $consulta_doc->fetch(PDO::FETCH_ASSOC);
 					/*foreach ($archivos as $archivo) {
 						$sql_doc = 'SELECT COUNT(dde_id) as num_pag FROM documentos_detalles WHERE doc_id = ?';
 						$values_doc = array($archivo['doc_id']);
@@ -171,10 +170,10 @@ class Libs extends Common {
 					$num_ar['peso'] = (is_null($num_ar['peso']) ? 0 : $num_ar['peso']);
 
 					$json['reporte'] .= '<tr>
-											<td>'.($num_car['num_car'] > 0 ? '<a href="carpeta.php?cl='.$cliente['cli_id'].'">'.$cliente['prefijo'].'</a>' : $cliente['prefijo']).'</td>
+											<td>'.$cliente['prefijo'].'</td>
 											<!--td>'.$num_car['num_car'].'</td-->
 											<td>'.$num_ar['num_ar'].'</td>
-											<td>'.$num_paginas.'</td>
+											<td>'.$numero['paginas'].'</td>
 											<td>'.$this->formatBytesToOther($num_ar['peso']).'</td>
 										 </tr>';
 
