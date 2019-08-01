@@ -892,16 +892,21 @@ class Libs extends Common {
 
 
 					//Comenzamos a verificar el contenido de cada página
-					include 'vendor/autoload.php';
-					$parser = new \Smalot\PdfParser\Parser();
-					$pdf    = $parser->parseFile($doc_name);
-					 
-					// Retrieve all pages from the pdf file.
-					$pages  = $pdf->getPages();
+					try {
+						include 'vendor/autoload.php';
+						$parser = new \Smalot\PdfParser\Parser();
+						$pdf    = $parser->parseFile($doc_name);
+						// Retrieve all pages from the pdf file.
+						$pages  = $pdf->getPages();
+					} catch (Exception $e) {
+						die($e->getMessage());
+					}
 		 
 					// Loop	 over each page to extract text.
 					$num_page = 1;
 					foreach ($pages as $page) {
+
+
 					    $sql = "INSERT INTO documentos_detalles (contenido,
 																 pagina,
 																 doc_id)
@@ -2000,27 +2005,29 @@ class Libs extends Common {
 					 
 								// Loop	 over each page to extract text.
 								$num_page = 1;
-								foreach ($pages as $page) {
-								    $sql = "INSERT INTO documentos_detalles (contenido,
-																			 pagina,
-																			 doc_id)
-											VALUES( ?, ?, ? )";	
+								if($pages != 0) {
+									foreach ($pages as $page) {
+									    $sql = "INSERT INTO documentos_detalles (contenido,
+																				 pagina,
+																				 doc_id)
+												VALUES( ?, ?, ? )";	
 
-									$values = array($page->getText(),
-													$num_page,
-													$doc_id);
+										$values = array($page->getText(),
+														$num_page,
+														$doc_id);
 
-									$consulta = $db->prepare($sql);
+										$consulta = $db->prepare($sql);
 
-									try {
-										$consulta->execute($values);
+										try {
+											$consulta->execute($values);
 
-									} catch(PDOException $e) {
-										$db->rollBack();
-										die($e->getMessage());
+										} catch(PDOException $e) {
+											$db->rollBack();
+											die($e->getMessage());
+										}
+
+										$num_page++;
 									}
-
-									$num_page++;
 								}
 
 								//Guardamos cuántas páginas fueron
@@ -2068,7 +2075,7 @@ class Libs extends Common {
 
 	function modificacionDocs() {
 		$db = $this->_conexion;
-		$sql_ar = "SELECT doc_id FROM documentos";
+		$sql_ar = "SELECT doc_id FROM documentos WHERE doc_id > 3822";
 		$values_ar = array();
 		$consulta_ar = $db->prepare($sql_ar);
 		$consulta_ar->execute($values_ar);
