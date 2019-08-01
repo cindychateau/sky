@@ -213,39 +213,46 @@ class Document
      */
     public function getPages()
     {
-        if (isset($this->dictionary['Catalog'])) {
-            // Search for catalog to list pages.
-            $id = reset($this->dictionary['Catalog']);
+        try{   
+              if (isset($this->dictionary['Catalog'])) {
+                  // Search for catalog to list pages.
+                  $id = reset($this->dictionary['Catalog']);
 
-            /** @var Pages $object */
-            $object = $this->objects[$id]->get('Pages');
-            if (method_exists($object, 'getPages')) {
-                $pages = $object->getPages(true);
+                /** @var Pages $object */
+                $object = $this->objects[$id]->get('Pages');
+                if (method_exists($object, 'getPages')) {
+                    $pages = $object->getPages(true);
+                    return $pages;
+                }
+            }
+
+            if (isset($this->dictionary['Pages'])) {
+                // Search for pages to list kids.
+                $pages = array();
+
+                /** @var Pages[] $objects */
+                $objects = $this->getObjectsByType('Pages');
+                foreach ($objects as $object) {
+                    $pages = array_merge($pages, $object->getPages(true));
+                }
+
                 return $pages;
             }
-        }
 
-        if (isset($this->dictionary['Pages'])) {
-            // Search for pages to list kids.
-            $pages = array();
+            if (isset($this->dictionary['Page'])) {
+                // Search for 'page' (unordered pages).
+                $pages = $this->getObjectsByType('Page');
 
-            /** @var Pages[] $objects */
-            $objects = $this->getObjectsByType('Pages');
-            foreach ($objects as $object) {
-                $pages = array_merge($pages, $object->getPages(true));
+                return array_values($pages);
             }
 
-            return $pages;
+            throw new \Exception('Missing catalog.');
+    
         }
-
-        if (isset($this->dictionary['Page'])) {
-            // Search for 'page' (unordered pages).
-            $pages = $this->getObjectsByType('Page');
-
-            return array_values($pages);
+        catch(\Exception $e)
+        {
+            $pages = '0';
         }
-
-        throw new \Exception('Missing catalog.');
     }
 
     /**
