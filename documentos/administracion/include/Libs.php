@@ -754,7 +754,7 @@ class Libs extends Common {
 
 			//Revisamos que exista la carpeta y vemos su ruta
 			$db = $this->_conexion;
-			$db->beginTransaction();
+			//$db->beginTransaction();
 			if(!$json['error']) {
 				$sql_car = 'SELECT * FROM carpetas WHERE car_id = ?';
 				$values_car = array($_POST['car_id']);
@@ -904,29 +904,30 @@ class Libs extends Common {
 		 
 					// Loop	 over each page to extract text.
 					$num_page = 1;
-					foreach ($pages as $page) {
+					if($pages != 0) {
+						foreach ($pages as $page) {
 
+						    $sql = "INSERT INTO documentos_detalles (contenido,
+																	 pagina,
+																	 doc_id)
+									VALUES( ?, ?, ? )";	
 
-					    $sql = "INSERT INTO documentos_detalles (contenido,
-																 pagina,
-																 doc_id)
-								VALUES( ?, ?, ? )";	
+							$values = array($page->getText(),
+											$num_page,
+											$doc_id);
 
-						$values = array($page->getText(),
-										$num_page,
-										$doc_id);
+							$consulta = $db->prepare($sql);
 
-						$consulta = $db->prepare($sql);
+							try {
+								$consulta->execute($values);
 
-						try {
-							$consulta->execute($values);
+							} catch(PDOException $e) {
+								//$db->rollBack();
+								die($e->getMessage());
+							}
 
-						} catch(PDOException $e) {
-							$db->rollBack();
-							die($e->getMessage());
+							$num_page++;
 						}
-
-						$num_page++;
 					}
 
 					//Guardamos cuántas páginas fueron
@@ -947,7 +948,7 @@ class Libs extends Common {
 					}
 
 					$json['msg'] = 'Documento guardado con éxito.';
-					$db->commit();
+					//$db->commit();
 
 					//chmod($ruta_doc, 0755);
 
@@ -1433,7 +1434,9 @@ class Libs extends Common {
 
 			//Eliminamos documento "físico"
 			$doc_name = $ruta.$documento['ruta'].$documento['nombre'];
-			unlink($doc_name);
+			if(file_exists($doc_name)) {
+				unlink($doc_name);
+			}
 
 			//Eliminamos el detalle
 			$consulta_del = $db->prepare("DELETE FROM documentos_detalles WHERE doc_id = :valor");
